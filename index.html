@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تقرير أبريل 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    /* ── متغيرات الألوان ── */
+    :root {
+      --bg:     #0b0f1c;
+      --card:   #131929;
+      --border: #1e2a42;
+      --text:   #e2e8f0;
+      --muted:  #4a5f80;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Tajawal',sans-serif; background:var(--bg); color:var(--text); direction:rtl; }
+
+    /* ── الهيدر ── */
+    header {
+      padding:16px 28px;
+      background:#0d1220;
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .h-title { font-size:16px; font-weight:900; }
+    .h-sub   { font-size:11px; color:var(--muted); margin-top:2px; }
+    .h-badge {
+      background:rgba(59,127,245,.12); border:1px solid rgba(59,127,245,.3);
+      color:#93c5fd; padding:5px 14px; border-radius:999px; font-size:12px; font-weight:700;
+    }
+
+    main { padding:20px 28px; max-width:1300px; margin:0 auto; }
+
+    /* ── عنوان قسم ── */
+    .sec {
+      font-size:10px; font-weight:700; letter-spacing:2px; color:var(--muted);
+      margin:18px 0 10px; display:flex; align-items:center; gap:8px;
+    }
+    .sec::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── كروت KPI (7 أعمدة) ── */
+    .kpi-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:10px; margin-bottom:18px; }
+    .kpi {
+      background:var(--card); border:1px solid var(--border);
+      border-top:2px solid var(--c,#3b7ff5); /* شريط اللون أعلاه */
+      border-radius:12px; padding:13px 11px;
+    }
+    .kpi-icon  { font-size:17px; margin-bottom:7px; }
+    .kpi-val   { font-size:25px; font-weight:900; color:#fff; line-height:1; }
+    .kpi-label { font-size:10px; color:var(--muted); margin-top:3px; }
+    .kpi-note  { font-size:10px; color:var(--c,#3b7ff5); margin-top:4px; font-weight:700; }
+
+    /* ── شبكات ── */
+    .row2  { display:grid; grid-template-columns:1fr 1fr;   gap:14px; margin-bottom:14px; }
+
+    /* ── كرت عام ── */
+    .card { background:var(--card); border:1px solid var(--border); border-radius:13px; padding:16px; }
+    .card-title { font-size:13px; font-weight:700; color:#fff; margin-bottom:2px; }
+    .card-sub   { font-size:10px; color:var(--muted); margin-bottom:12px; }
+
+    /* ── صناديق فترات الوايتات ── */
+    .periods {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; background:var(--border); border-radius:9px; overflow:hidden; margin-bottom:12px;
+    }
+    .per { background:#161d2f; padding:10px; text-align:center; }
+    .per-name  { font-size:9px; font-weight:700; letter-spacing:1px; color:var(--muted); margin-bottom:3px; }
+    .per-value { font-size:22px; font-weight:900; }
+    .per-pct   { font-size:10px; color:var(--muted); margin-top:2px; }
+
+    /* ── صناديق التنبيه ── */
+    .alert {
+      border-radius:9px; padding:11px 15px; display:flex;
+      gap:9px; margin-bottom:12px; font-size:11px; line-height:1.7;
+    }
+    .alert-red  { background:rgba(239,68,68,.06);  border:1px solid rgba(239,68,68,.2); }
+    .alert-gold { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.2); }
+    .alert h4   { font-size:12px; font-weight:700; margin-bottom:2px; }
+    .alert-red  h4 { color:#fca5a5; } .alert-red  p { color:#f87171; }
+    .alert-gold h4 { color:#fde68a; } .alert-gold p { color:#fbbf24; }
+
+    /* ── الرسوم البيانية ── */
+    .ch180 { height:180px; }
+    .ch200 { height:200px; }
+
+    /* ── حالة البلاغات: صف الأرقام ── */
+    .status-row { display:flex; justify-content:space-between; margin-top:10px; }
+    .status-row span:first-child { font-size:11px; color:var(--muted); }
+    .status-row span:last-child  { font-size:15px; font-weight:900; }
+
+    footer {
+      text-align:center; padding:14px; color:var(--muted);
+      font-size:10px; border-top:1px solid var(--border); margin-top:6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div>
+    <div class="h-title">🏙️ لوحة تحليل البلاغات – أبريل 2026</div>
+    <div class="h-sub">SBC – RPT – CTR – 2026 | غرفة التحكم</div>
+  </div>
+  <div class="h-badge">📊 843 بلاغ | 1–30 أبريل</div>
+</header>
+
+<main>
+
+  <!-- ══ KPIs ══ -->
+  <div class="sec">📌 الملخص التنفيذي</div>
+  <div class="kpi-grid">
+    <div class="kpi" style="--c:#3b7ff5">
+      <div class="kpi-icon">📋</div><div class="kpi-val">843</div>
+      <div class="kpi-label">إجمالي البلاغات</div><div class="kpi-note">1–30 أبريل</div>
+    </div>
+    <div class="kpi" style="--c:#10b981">
+      <div class="kpi-icon">✅</div><div class="kpi-val">836</div>
+      <div class="kpi-label">مغلقة</div><div class="kpi-note">99.2% إنجاز</div>
+    </div>
+    <div class="kpi" style="--c:#f59e0b">
+      <div class="kpi-icon">🔄</div><div class="kpi-val">7</div>
+      <div class="kpi-label">متابعة (مفتوح)</div><div class="kpi-note">0.8%</div>
+    </div>
+    <div class="kpi" style="--c:#06b6d4">
+      <div class="kpi-icon">🚛</div><div class="kpi-val">349</div>
+      <div class="kpi-label">الوايتات</div><div class="kpi-note">A+B+C</div>
+    </div>
+    <div class="kpi" style="--c:#ef4444">
+      <div class="kpi-icon">🛗</div><div class="kpi-val">28</div>
+      <div class="kpi-label">أعطال مصعد+سلم</div><div class="kpi-note">12 مصعد + 16 سلم</div>
+    </div>
+    <div class="kpi" style="--c:#f97316">
+      <div class="kpi-icon">🚧</div><div class="kpi-val">18</div>
+      <div class="kpi-label">أعطال بوابات</div><div class="kpi-note">جميعها مغلقة</div>
+    </div>
+    <div class="kpi" style="--c:#f59e0b">
+      <div class="kpi-icon">🔔</div><div class="kpi-val">61</div>
+      <div class="kpi-label">صافرات إنذار</div><div class="kpi-note">7.2% – راجع!</div>
+    </div>
+  </div>
+
+  <!-- ══ الوايتات + الحالة ══ -->
+  <div class="sec">🚛 الوايتات & حالة البلاغات</div>
+  <div class="row2">
+
+    <!-- الوايتات: صناديق الفترات + دائرة -->
+    <div class="card">
+      <div class="card-title">توزيع الوايتات</div>
+      <div class="card-sub">إجمالي 349 وايت – فترة D = صفر</div>
+      <!-- 3 فترات فقط (حذفنا D) -->
+      <div class="periods">
+        <div class="per">
+          <div class="per-name">فترة A</div>
+          <div class="per-value" style="color:#3b7ff5">69</div>
+          <div class="per-pct">19.8%</div>
+        </div>
+        <div class="per">
+          <div class="per-name">فترة B</div>
+          <div class="per-value" style="color:#06b6d4">113</div>
+          <div class="per-pct">32.4%</div>
+        </div>
+        <div class="per">
+          <div class="per-name">فترة C</div>
+          <div class="per-value" style="color:#8b5cf6">167</div>
+          <div class="per-pct">47.8%</div>
+        </div>
+      </div>
+      <div class="ch180"><canvas id="waterPie"></canvas></div>
+    </div>
+
+    <!-- حالة البلاغات: دائرة + أرقام -->
+    <div class="card">
+      <div class="card-title">حالة البلاغات</div>
+      <div class="card-sub">مغلق / متابعة</div>
+      <div class="ch200" style="display:flex;align-items:center;justify-content:center">
+        <canvas id="statusChart"></canvas>
+      </div>
+      <div class="status-row">
+        <span>مغلق</span><span style="color:#34d399">836</span>
+      </div>
+      <div class="status-row" style="margin-top:4px">
+        <span>متابعة</span><span style="color:#fbbf24">7</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ التنبيهات ══ -->
+  <div class="sec">⚠️ تنبيهات</div>
+
+  <!-- البلاغات المفتوحة (متابعة) -->
+  <div class="alert alert-red">
+    <div>⚠️</div>
+    <div>
+      <h4>7 بلاغات مفتوحة (متابعة)</h4>
+      <p>
+        مخلفات هافلوك – البلازا &nbsp;|&nbsp;
+        مخلفات هافلوك – الغاليري &nbsp;|&nbsp;
+        أدوات هافلوك &nbsp;|&nbsp;
+        عطل بوابة 2 (متكررة – مرتين) &nbsp;|&nbsp;
+        تسريب دور 99 &nbsp;|&nbsp;
+        تسريب TL4
+      </p>
+    </div>
+  </div>
+
+  <!-- صافرات الإنذار: الأسباب فقط بدون توصية -->
+  <div class="alert alert-gold">
+    <div>🔔</div>
+    <div>
+      <h4>صافرات الإنذار – 61 بلاغ (7.2%)</h4>
+      <p>الأسباب: غبار المقاولين (الأكثر) &nbsp;|&nbsp; بخار مغسلة الفورسيزون &nbsp;|&nbsp; بخور &nbsp;|&nbsp; أعمال البناء الرقمي</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>SBC – RPT – CTR – 2026 | أبريل 2026 | إجمالي: 843 بلاغ</footer>
+
+<script>
+  /* ── إعدادات Chart.js ── */
+  Chart.defaults.color = '#4a5f80';
+  Chart.defaults.font.family = 'Tajawal, sans-serif';
+  Chart.defaults.font.size = 11;
+
+  /* ── دالة مختصرة لرسم الدونت ── */
+  function makeDoughnut(id, labels, data, colors) {
+    new Chart(document.getElementById(id), {
+      type: 'doughnut',
+      data: {
+        labels,
+        datasets: [{ data, backgroundColor: colors, borderColor: colors.map(c => c + '99'), borderWidth: 2 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '62%',
+        plugins: { legend: { position: 'bottom', labels: { padding: 8, font: { size: 10 } } } }
+      }
+    });
+  }
+
+  /* ── دائرة الوايتات (A / B / C) ── */
+  makeDoughnut('waterPie',
+    ['A – 69', 'B – 113', 'C – 167'],
+    [69, 113, 167],
+    ['rgba(59,127,245,.85)', 'rgba(6,182,212,.85)', 'rgba(139,92,246,.85)']
+  );
+
+  /* ── دائرة حالة البلاغات ── */
+  makeDoughnut('statusChart',
+    ['مغلق – 836', 'متابعة – 7'],
+    [836, 7],
+    ['rgba(16,185,129,.85)', 'rgba(245,158,11,.85)']
+  );
+</script>
+
+</body>
+</html>
